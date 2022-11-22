@@ -70,32 +70,28 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
-        """retrieve one object"""
-        with open("file.json", "r", encoding="utf8") as f:
-            content = json.loads(f.read())
-            clasKey = ''
-            for theClass, theValue in classes.items():
-                if theValue is cls:
-                    clasKey = theClass + '.' + id
-                    for key, val in content.items():
-                        if key == clasKey:
-                            return(cls(**val))
-
+        """
+        Return object based on the class name and its ID
+        or None if not found
+        """
+        if cls is not None and id is not None:
+            clases = self.all(cls)
+            for obj in clases.values():
+                if obj.id == id:
+                    return obj
+            return None
+        else:
+            return None
 
     def count(self, cls=None):
-        """count the number of objs in storage"""
-        count = 0
-        with open("file.json", "r", encoding="utf8") as f:
-            content = json.loads(f.read())
-            clasName = ''
-            if cls is not None:
-                for theClass, theValue in classes.items():
-                    if theValue == cls:
-                        clasName = theClass
-                        for key in content.keys():
-                            if clasName in key:
-                                count += 1
-            else:
-                for key in content.keys():
-                    count += 1
-        return count
+        """
+        Return the number of obejcts in the storage
+        """
+        if cls is not None:
+            clase = self.all(cls).values()
+            num = len(clase)
+        else:
+            clase = self.all().values()
+            num = len(clase)
+
+        return num

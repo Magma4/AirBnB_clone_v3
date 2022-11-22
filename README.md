@@ -1,1 +1,1 @@
-Third airbnb clone project
+Third project on Airbnb, restful API
